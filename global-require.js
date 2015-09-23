@@ -3,43 +3,49 @@
  */
 var generateGlobalMap = require('./generateGlobalMap.js')
 
-module.exports = function(babel) {
-  var t = babel.types
+module.exports = function(opts) {
+  var globalMap = {}
 
-  var globalMap = generateGlobalMap(__dirname + '/example/src')
+  if (opts.root) {
+    globalMap = generateGlobalMap(opts.root)
+  }
 
-  return new babel.Plugin('babel-plugin-global-require', {
-    visitor: {
-      ImportDeclaration: function(node, parent) {
-        var what = node.source.value
+  return function(babel) {
+    var t = babel.types
 
-        if (globalMap[what]) {
-          node.source.value = globalMap[what].path
-        }
+    return new babel.Plugin('babel-plugin-global-require', {
+      visitor: {
+        ImportDeclaration: function(node, parent) {
+          var what = node.source.value
 
-        return node
-      },
-      CallExpression: function(node, parent) {
-        if (! isRequireCall(t, node)) {
-          return
-        }
-
-        if (node.arguments[0] && t.isLiteral(node.arguments[0])) {
-          var what = node.arguments[0].value
-
-          if (! globalMap[what]) {
-            return node
+          if (globalMap[what]) {
+            node.source.value = globalMap[what].path
           }
 
-          return t.callExpression(node.callee, [
-            t.literal(globalMap[what].path)
-          ])
-        }
+          return node
+        },
+        CallExpression: function(node, parent) {
+          if (! isRequireCall(t, node)) {
+            return
+          }
 
-        return node
+          if (node.arguments[0] && t.isLiteral(node.arguments[0])) {
+            var what = node.arguments[0].value
+
+            if (! globalMap[what]) {
+              return node
+            }
+
+            return t.callExpression(node.callee, [
+              t.literal(globalMap[what].path)
+            ])
+          }
+
+          return node
+        }
       }
-    }
-  })
+    })
+  }
 }
 
 function isRequireCall(t, call) {
