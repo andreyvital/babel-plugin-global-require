@@ -17,7 +17,7 @@ module.exports = function generateGlobalMap(
         name: path.basename(file, path.extname(file))
       }
     }),
-    node_modules ? findNodeModules(node_modules) : []
+    findPotentialConflictList(node_modules)
   ).reduce(
     function(previous, current) {
       if (! previous[current.name]) {
@@ -31,10 +31,38 @@ module.exports = function generateGlobalMap(
 }
 
 /**
- * @param   {String} node_modules
+ * "node_modules": "package.json" (devDependencies + dependencies)
+ * "node_modules": "node_modules" (shallow scan)
+ * "node_modules": ["module", "module", "module"]
+ *
+ * @param   {?String|String[]} node_modules
  * @returns {String[]}
  */
-function findNodeModules(node_modules) {
+function findPotentialConflictList(node_modules) {
+  if (! node_modules) {
+    return []
+  }
+
+  if (node_modules.constructor.name === 'Array') {
+    return node_modules
+  }
+
+  if (/package\.json/.test(node_modules)) {
+    try {
+      var packageJson = JSON.parse(fs.readFileSync(node_modules))
+
+      var devDependencies = packageJson.devDependencies || []
+      var dependencies = packageJson.dependencies || []
+
+      return [].concat(
+        Object.keys(devDependencies),
+        Object.keys(dependencies)
+      )
+    } catch (e) {
+      return []
+    }
+  }
+
   return fs.readdirSync(node_modules).filter(function(file) {
     var target = path.join(node_modules, file)
 
