@@ -1,7 +1,7 @@
 require('babel/register')({
   plugins: [
     require('../global-require.js')({
-      root: __dirname,
+      root: __dirname + '/src',
       exclude: /node_modules/
     })
   ]
