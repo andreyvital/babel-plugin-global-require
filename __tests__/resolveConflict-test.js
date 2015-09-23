@@ -110,6 +110,24 @@ describe('resolveConflict', function() {
     ])
   })
 
-  it('takes in consideration the given "conflict map"')
+  it('takes in consideration the given "conflict map"', function() {
+    expect(
+      resolveConflict(
+        [
+          {
+            name: 'sum',
+            path: 'src/math/sum.js'
+          }
+        ],
+        ['sum']
+      )
+    ).to.eql([
+      {
+        name: 'math/sum',
+        path: 'src/math/sum.js'
+      }
+    ])
+  })
+
   it('resolves conflict relative to root')
 })

@@ -5,13 +5,15 @@ var path = require('path')
 
 var PATH_SEP = path.sep
 
-module.exports = function resolveConflict(map) {
+module.exports = function resolveConflict(map, conflictMap) {
   var known = findDuplicates(map)
   var solutions = []
 
-  var without = map.filter(function(candidate) {
-    return known.indexOf(candidate) === -1
-  })
+  known = known.concat(
+    map.filter(function(candidate) {
+      return (conflictMap || []).indexOf(candidate.name) !== -1
+    })
+  )
 
   known.forEach(function(current) {
     var previous = []
@@ -43,7 +45,9 @@ module.exports = function resolveConflict(map) {
     }
   })
 
-  return without.concat(
+  return map.filter(function(candidate) {
+    return known.indexOf(candidate) === -1
+  }).concat(
     Object.keys(solutions).map(function(key) {
       return solutions[key]
     })
