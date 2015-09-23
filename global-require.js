@@ -9,6 +9,7 @@ module.exports = function(opts) {
   if (opts.root) {
     globalMap = generateGlobalMap(
       opts.root,
+      opts.node_modules,
       opts.exclude
     )
   }

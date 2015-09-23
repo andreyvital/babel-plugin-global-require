@@ -5,14 +5,19 @@ var fs = require('fs')
 var path = require('path')
 var resolveConflict = require('./resolveConflict')
 
-module.exports = function generateGlobalMap(root, exclude) {
+module.exports = function generateGlobalMap(
+  root,
+  node_modules,
+  exclude
+) {
   return resolveConflict(
     fetchAllFiles(root, exclude).map(function(file) {
       return {
         path: file,
         name: path.basename(file, path.extname(file))
       }
-    })
+    }),
+    findNodeModules(node_modules)
   ).reduce(
     function(previous, current) {
       if (! previous[current.name]) {
@@ -23,6 +28,22 @@ module.exports = function generateGlobalMap(root, exclude) {
     },
     {}
   )
+}
+
+/**
+ * @param   {String} node_modules
+ * @returns {String[]}
+ */
+function findNodeModules(node_modules) {
+  return fs.readdirSync(node_modules).filter(function(file) {
+    var target = path.join(node_modules, file)
+
+    if (fs.statSync(target).isDirectory()) {
+      return true
+    }
+
+    return false
+  })
 }
 
 /**
