@@ -18,5 +18,15 @@
     "import"
   ],
   "author": "Andrey K. Vital <andreykvital@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  },
+  "options": {
+    "mocha": "__tests__/**/*-test.js -R spec"
+  },
+  "scripts": {
+    "test": "mocha $npm_package_options_mocha"
+  }
 }
