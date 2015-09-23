@@ -17,10 +17,13 @@ P.S: `exclude` and `node_modules` are optional. You'll know when to use it.
 
 See the examples above of how to configure. Take which fits best for your setup. Profit.
 
-A simple plugin that allows you to require globally. You just
-need to define the *root* directory of your project and this plugin will generate a global alias map.
+#### Benefits
+- You'll use same require statement for anywhere in the project;
+- You'll avoid path hell (../../../../../);
+- You'll write a more concise code.
 
-It's convention based: the alias is always the name of the file. For example:
+
+This plugin is convention based: the alias is always the name of the file. For example:
 ```
 src (root)
   deep
@@ -30,7 +33,7 @@ src (root)
       NuclearEventEmitter.js
 ```
 
-With this plugin, you can:
+Then:
 ```JS
 import NuclearEventEmitter from 'NuclearEventEmitter'
 import sum from 'sum'
