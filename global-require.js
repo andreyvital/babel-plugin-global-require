@@ -18,16 +18,17 @@ module.exports = function(babel) {
   var t = babel.types
   var globalMap = {}
 
-  if (opts.root) {
-    globalMap = generateGlobalMap(
-      path.resolve(opts.root),
-      path.resolve(opts.node_modules),
-      opts.exclude
-    )
-  }
-
   return new babel.Plugin('babel-plugin-global-require', {
     visitor: {
+      Program: function(node, parent) {
+        if (opts.root) {
+          globalMap = generateGlobalMap(
+            path.resolve(opts.root),
+            path.resolve(opts.node_modules),
+            opts.exclude
+          )
+        }
+      },
       ImportDeclaration: function(node, parent) {
         var what = node.source.value
 
