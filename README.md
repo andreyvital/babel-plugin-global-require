@@ -1,4 +1,21 @@
 ## `babel-plugin-global-require`
+```
+npm install babel-plugin-global-require --save-dev
+```
+
+Tell the plugin where's your *root*, *node_modules* and what to *exclude* by creating a new `.global-require` file:
+
+```JSON
+{
+  "root": "src",
+  "exclude": "node_modules",
+  "node_modules": "node_modules"
+}
+```
+
+P.S: `exclude` and `node_modules` are optional. You'll know when to use it.
+
+See the examples above of how to configure. Take which fits best for your setup. Profit.
 
 A simple plugin that allows you to require globally. You just
 need to define the *root* directory of your project and this plugin will generate a global alias map.
