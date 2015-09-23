@@ -1,0 +1,22 @@
+{
+  "name": "babel-plugin-global-require",
+  "version": "0.1.0",
+  "description": "A simple plugin that allows you to require/import globally",
+  "main": "global-require.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "babel-plugin-global-require"
+  },
+  "keywords": [
+    "babel",
+    "plugin",
+    "global",
+    "require",
+    "import"
+  ],
+  "author": "Andrey K. Vital <andreykvital@gmail.com>",
+  "license": "MIT"
+}
