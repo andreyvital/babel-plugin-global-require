@@ -16,7 +16,7 @@ Tell the plugin where's your *root*, *node_modules* and what to *exclude* by cre
 P.S: `exclude` and `node_modules` are optional. You'll know when to use it. See the examples above of how to configure. Take the one which fits best for your setup
 
 #### Benefits
-- You'll use same require statement for anywhere in the project;
+- You'll use the same require statement from anywhere in your project;
 - You'll avoid path hell (../../../../../);
 - You'll write a more concise code.
 
