@@ -7,7 +7,10 @@ module.exports = function(opts) {
   var globalMap = {}
 
   if (opts.root) {
-    globalMap = generateGlobalMap(opts.root)
+    globalMap = generateGlobalMap(
+      opts.root,
+      opts.exclude
+    )
   }
 
   return function(babel) {
