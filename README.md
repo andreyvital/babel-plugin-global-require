@@ -34,7 +34,7 @@ src
     div.js
 ```
 
-You can't require `sum.js` or `div.js` only by its name, because it could result in a require of the file you don't want. So, for this specific case, the conflict is resolved simply by going up one directory (and it keeps going until there's no conflict):
+You can't require `sum.js` or `div.js` only by its name, because it could result in a require of undesired file. So, for this specific case, the conflict is resolved simply by going up one directory (and it keeps going until there's no conflict):
 ```JS
 import sum from 'math/sum'
 import div from 'deep/math/div'
