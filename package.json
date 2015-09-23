@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-global-require",
   "version": "0.2.0",
-  "description": "A simple plugin that allows you to require/import globally",
+  "description": "A simple plugin that allows you to require globally",
   "main": "global-require.js",
   "scripts": {
     "test": "mocha $npm_package_options_mocha"
