@@ -3,6 +3,8 @@
  */
 var path = require('path')
 
+var PATH_SEP = path.sep
+
 module.exports = function resolveConflict(map) {
   var known = findDuplicates(map)
   var solutions = []
@@ -13,17 +15,17 @@ module.exports = function resolveConflict(map) {
 
   known.forEach(function(current) {
     var previous = []
-    var parts = path.dirname(current.path).split(path.sep)
+    var parts = path.dirname(current.path).split(PATH_SEP)
 
     while (parts.length) {
       var pop = parts.pop()
-      var proposal = pop.concat(path.sep, current.name)
+      var proposal = pop.concat(PATH_SEP, current.name)
 
       if (previous.length) {
         proposal = pop.concat(
-          path.sep,
-          previous.join(path.sep),
-          path.sep,
+          PATH_SEP,
+          previous.join(PATH_SEP),
+          PATH_SEP,
           current.name
         )
       }
