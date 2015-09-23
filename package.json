@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "babel-plugin-global-require"
+    "url": "https://github.com/CentaurWarchief/babel-plugin-global-require"
   },
   "keywords": [
     "babel",
