@@ -10,7 +10,16 @@ module.exports = function generateGlobalMap(root) {
       path: file,
       name: path.basename(file, path.extname(file))
     }
-  })
+  }).reduce(
+    function(previous, current) {
+      if (! previous[current.name]) {
+        previous[current.name] = current
+      }
+
+      return previous
+    },
+    {}
+  )
 }
 
 /**
