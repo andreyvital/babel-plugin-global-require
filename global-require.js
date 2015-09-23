@@ -10,7 +10,11 @@ var config = path.resolve('.global-require')
 
 if (fs.existsSync(config)) {
   opts = JSON.parse(fs.readFileSync(config), function(key, value) {
-    return key === 'exclude' ? new RegExp(value) : value
+    if (key === 'exclude' && value.length) {
+      return new RegExp(value)
+    }
+
+    return value
   })
 }
 
@@ -21,10 +25,13 @@ module.exports = function(babel) {
   return new babel.Plugin('babel-plugin-global-require', {
     visitor: {
       Program: function(node, parent) {
+        var node_modules
+          = opts.node_modules ? path.resolve(opts.node_modules) : null
+
         if (opts.root) {
           globalMap = generateGlobalMap(
             path.resolve(opts.root),
-            path.resolve(opts.node_modules),
+            node_modules,
             opts.exclude
           )
         }

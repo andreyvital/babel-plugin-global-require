@@ -17,7 +17,7 @@ module.exports = function generateGlobalMap(
         name: path.basename(file, path.extname(file))
       }
     }),
-    findNodeModules(node_modules)
+    node_modules ? findNodeModules(node_modules) : []
   ).reduce(
     function(previous, current) {
       if (! previous[current.name]) {
