@@ -3,8 +3,11 @@
  */
 var path = require('path')
 
-var PATH_SEP = path.sep
-
+/**
+ * @param   {Object[]} map
+ * @param   {String[]} potentialConflictMap
+ * @returns {Object[]}
+ */
 module.exports = function resolveConflict(
   map,
   potentialConflictMap
@@ -20,18 +23,16 @@ module.exports = function resolveConflict(
 
   known.forEach(function(current) {
     var previous = []
-    var parts = path.dirname(current.path).split(PATH_SEP)
+    var parts = path.dirname(current.path).split(path.sep)
 
     while (parts.length) {
       var pop = parts.pop()
-      var proposal = pop.concat(PATH_SEP, current.name)
+      var proposal = pop.concat(path.sep, current.name)
 
       if (previous.length) {
-        proposal = pop.concat(
-          PATH_SEP,
-          previous.join(PATH_SEP),
-          PATH_SEP,
-          current.name
+        proposal = path.join.apply(
+          null,
+          [pop].concat(previous, current.name)
         )
       }
 
