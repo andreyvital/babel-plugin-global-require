@@ -5,13 +5,16 @@ var path = require('path')
 
 var PATH_SEP = path.sep
 
-module.exports = function resolveConflict(map, conflictMap) {
-  var known = findDuplicates(map)
+module.exports = function resolveConflict(
+  map,
+  potentialConflictMap
+) {
+  var known = findConflictsInMap(map)
   var solutions = []
 
   known = known.concat(
     map.filter(function(candidate) {
-      return (conflictMap || []).indexOf(candidate.name) !== -1
+      return (potentialConflictMap || []).indexOf(candidate.name) !== -1
     })
   )
 
@@ -54,10 +57,17 @@ module.exports = function resolveConflict(map, conflictMap) {
   )
 }
 
-function findDuplicates(arr) {
-  return arr.filter(function(a, ai) {
-    return arr.some(function(b, bi) {
-      return a.name === b.name && ai !== bi
+/**
+ * @param   {Object[]} map
+ * @returns {Object[]}
+ */
+function findConflictsInMap(map) {
+  return map.filter(function(module, moduleIndex) {
+    return map.some(function(conflict, conflictIndex) {
+      return (
+        module.name === conflict.name &&
+        moduleIndex !== conflictIndex
+      )
     })
   })
 }
