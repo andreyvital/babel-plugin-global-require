@@ -3,14 +3,17 @@
  */
 var fs = require('fs')
 var path = require('path')
+var resolveConflict = require('./resolveConflict')
 
 module.exports = function generateGlobalMap(root, exclude) {
-  return fetchAllFiles(root, exclude).map(function(file) {
-    return {
-      path: file,
-      name: path.basename(file, path.extname(file))
-    }
-  }).reduce(
+  return resolveConflict(
+    fetchAllFiles(root, exclude).map(function(file) {
+      return {
+        path: file,
+        name: path.basename(file, path.extname(file))
+      }
+    })
+  ).reduce(
     function(previous, current) {
       if (! previous[current.name]) {
         previous[current.name] = current
