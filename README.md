@@ -13,7 +13,7 @@ Tell the plugin where's your *root*, *node_modules* and what to *exclude* by cre
 }
 ```
 
-**node_modules** could be configured with few options: *package.json*, `["module", "module", "module"]` and the path to the *node_modules* directory. Both options `exclude` and `node_modules` are optional.
+**node_modules** can be configured with few options: *package.json*, `["module", "module", "module"]` and the path to the *node_modules* directory. Both options `exclude` and `node_modules` are optional.
 
 ### What are the benefits?
 - You'll use the same require statement from anywhere in your project;
