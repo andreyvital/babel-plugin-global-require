@@ -36,18 +36,10 @@ module.exports = function(babel) {
           )
         }
       },
-      ImportDeclaration: function(node, parent, scope, file) {
+      ImportDeclaration: function(node, parent) {
         var what = node.source.value
 
         if (globalMap[what]) {
-          // GitHub refs:#2
-          // node.source.value = './' + path.relative(
-          //   path.dirname(
-          //     path.resolve(file.opts.filename)
-          //   ),
-          //   globalMap[what].path
-          // )
-
           node.source.value = globalMap[what].path
         }
 
