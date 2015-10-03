@@ -3,7 +3,7 @@
  */
 var fs = require('fs')
 var path = require('path')
-var generateGlobalMap = require('./generateGlobalMap.js')
+var generateGlobalMap = require('./src/generateGlobalMap.js')
 
 var opts = {}
 var config = path.resolve('.global-require')
