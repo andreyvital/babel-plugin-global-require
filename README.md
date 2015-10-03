@@ -69,6 +69,6 @@ src
 You can't require `hasAccessTo.js` only by its name because it would result in a require of undesired file. So for this specific case, the conflict is resolved simply by going up one directory (and it keeps going until there's no conflict):
 
 ```JS
-import {hasAccessTo as ...} from 'rbac/hasAccessTo'
-import {hasAccessTo as ...} from 'acl/hasAccessTo'
+import { hasAccessTo as ... } from 'rbac/hasAccessTo'
+import { hasAccessTo as ... } from 'acl/hasAccessTo'
 ```
