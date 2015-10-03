@@ -21,6 +21,7 @@ if (fs.existsSync(config)) {
 module.exports = function(babel) {
   var t = babel.types
   var globalMap = {}
+  // var cwd = process.cwd()
 
   return new babel.Plugin('babel-plugin-global-require', {
     visitor: {
@@ -41,6 +42,8 @@ module.exports = function(babel) {
 
         if (globalMap[what]) {
           node.source.value = globalMap[what].path
+          // refs #2
+          // node.source.value = './' + path.relative(cwd, globalMap[what].path)
         }
 
         return node
