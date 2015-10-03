@@ -2,6 +2,7 @@
  * @author Andrey K. Vital <andreykvital@gmail.com>
  */
 var fs = require('fs')
+var path = require('path')
 
 /**
  * "node_modules": "package.json" (devDependencies + dependencies)
