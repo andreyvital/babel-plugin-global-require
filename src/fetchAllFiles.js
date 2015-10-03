@@ -13,11 +13,7 @@ module.exports = function fetchAllFiles(root, exclude) {
   var results = []
 
   fs.readdirSync(root).filter(function(file) {
-    if (exclude && exclude.test(file)) {
-      return false
-    }
-
-    return true
+    return exclude && exclude.test(file) ? false : true
   }).forEach(function(file) {
     var absolute = path.join(root, file)
     var stat = fs.statSync(absolute)
