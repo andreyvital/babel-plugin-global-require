@@ -49,11 +49,7 @@ module.exports = function(babel) {
         return node
       },
       CallExpression: function(node, parent) {
-        var isRequireCall = t.isIdentifier(node.callee, {
-          name: 'require'
-        })
-
-        if (! isRequireCall) {
+        if (! t.isIdentifier(node.callee, { name: 'require' })) {
           return node
         }
 
