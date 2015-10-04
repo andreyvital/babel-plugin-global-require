@@ -57,7 +57,12 @@ module.exports = function(babel) {
           return node
         }
 
-        if (node.arguments[0] && t.isLiteral(node.arguments[0])) {
+        if (node.arguments && node.arguments.length === 0) {
+          return node
+        }
+
+        // CommonJS
+        if (t.isLiteral(node.arguments[0])) {
           var what = node.arguments[0].value
 
           if (! globalMap[what]) {
@@ -66,6 +71,20 @@ module.exports = function(babel) {
 
           return t.callExpression(node.callee, [
             t.literal(globalMap[what].path)
+          ])
+        }
+
+        // AMD
+        if (t.isArrayExpression(node.arguments[0]) && t.isFunctionExpression(node.arguments[1])) {
+          return t.callExpression(node.callee, [
+            t.arrayExpression(
+              node.arguments[0].elements.map(function(node) {
+                var what = node.value
+
+                return t.literal(globalMap[what] ? globalMap[what].path : what)
+              })
+            ),
+            node.arguments[1]
           ])
         }
 
