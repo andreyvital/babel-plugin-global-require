@@ -53,13 +53,15 @@ module.exports = function(babel) {
           return node
         }
 
-        if (node.arguments && node.arguments.length === 0) {
+        var args = node.arguments
+
+        if (args && args.length === 0) {
           return node
         }
 
         // CommonJS
-        if (t.isLiteral(node.arguments[0])) {
-          var what = node.arguments[0].value
+        if (t.isLiteral(args[0])) {
+          var what = args[0].value
 
           if (! globalMap[what]) {
             return node
@@ -70,19 +72,13 @@ module.exports = function(babel) {
           ])
         }
 
-        // AMD
-        var isAmdRequire = (
-          t.isArrayExpression(node.arguments[0]) &&
-          t.isFunctionExpression(node.arguments[1])
-        )
-
-        if (! isAmdRequire) {
+        if (! t.isArrayExpression(args[0]) && t.isFunctionExpression(args[1])) {
           return node
         }
 
         return t.callExpression(node.callee, [
           t.arrayExpression(
-            node.arguments[0].elements.map(function(node) {
+            args[0].elements.map(function(node) {
               var what = node.value
 
               return t.literal(
@@ -90,7 +86,7 @@ module.exports = function(babel) {
               )
             })
           ),
-          node.arguments[1]
+          args[1]
         ])
       }
     }
