@@ -75,20 +75,27 @@ module.exports = function(babel) {
         }
 
         // AMD
-        if (t.isArrayExpression(node.arguments[0]) && t.isFunctionExpression(node.arguments[1])) {
-          return t.callExpression(node.callee, [
-            t.arrayExpression(
-              node.arguments[0].elements.map(function(node) {
-                var what = node.value
+        var isAmdRequire = (
+          t.isArrayExpression(node.arguments[0]) &&
+          t.isFunctionExpression(node.arguments[1])
+        )
 
-                return t.literal(globalMap[what] ? globalMap[what].path : what)
-              })
-            ),
-            node.arguments[1]
-          ])
+        if (! isAmdRequire) {
+          return node
         }
 
-        return node
+        return t.callExpression(node.callee, [
+          t.arrayExpression(
+            node.arguments[0].elements.map(function(node) {
+              var what = node.value
+
+              return t.literal(
+                globalMap[what] ? globalMap[what].path : what
+              )
+            })
+          ),
+          node.arguments[1]
+        ])
       }
     }
   })
