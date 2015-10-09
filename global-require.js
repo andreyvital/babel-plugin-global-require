@@ -49,16 +49,19 @@ module.exports = function(babel) {
         return node
       },
       CallExpression: function(node, parent) {
-        var isRequireCall = t.isIdentifier(node.callee, {
-          name: 'require'
-        })
-
-        if (! isRequireCall) {
+        if (! t.isIdentifier(node.callee, { name: 'require' })) {
           return node
         }
 
-        if (node.arguments[0] && t.isLiteral(node.arguments[0])) {
-          var what = node.arguments[0].value
+        var args = node.arguments
+
+        if (args && args.length === 0) {
+          return node
+        }
+
+        // CommonJS
+        if (t.isLiteral(args[0])) {
+          var what = args[0].value
 
           if (! globalMap[what]) {
             return node
@@ -69,7 +72,22 @@ module.exports = function(babel) {
           ])
         }
 
-        return node
+        if (! t.isArrayExpression(args[0]) && t.isFunctionExpression(args[1])) {
+          return node
+        }
+
+        return t.callExpression(node.callee, [
+          t.arrayExpression(
+            args[0].elements.map(function(node) {
+              var what = node.value
+
+              return t.literal(
+                globalMap[what] ? globalMap[what].path : what
+              )
+            })
+          ),
+          args[1]
+        ])
       }
     }
   })
