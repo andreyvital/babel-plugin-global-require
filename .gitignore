@@ -1,3 +1,4 @@
 node_modules/
 output.js
 npm-debug.log
+.idea
