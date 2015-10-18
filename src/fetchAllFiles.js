@@ -3,7 +3,7 @@
  */
 var fs = require('fs')
 var path = require('path')
-
+var slash = require('slash')
 /**
  * @param   {String} root
  * @param   {RegExp} exclude
@@ -15,7 +15,7 @@ module.exports = function fetchAllFiles(root, exclude) {
   fs.readdirSync(root).filter(function(file) {
     return exclude && exclude.test(file) ? false : true
   }).forEach(function(file) {
-    var absolute = path.join(root, file)
+    var absolute = slash(path.join(root, file)).toString()
     var stat = fs.statSync(absolute)
 
     if (stat.isDirectory()) {
@@ -23,7 +23,7 @@ module.exports = function fetchAllFiles(root, exclude) {
       return
     }
 
-    results.push(absolute)
+    results.push(slash(absolute).toString())
   })
 
   return results

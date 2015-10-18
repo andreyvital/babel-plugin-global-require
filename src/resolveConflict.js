@@ -2,6 +2,9 @@
  * @author Andrey K. Vital <andreykvital@gmail.com>
  */
 var path = require('path')
+var slash = require('slash')
+var os = require('os')
+var pathSep = os.type() === "Windows_NT"? "/": path.sep;
 
 /**
  * @param   {Object[]} map
@@ -23,12 +26,12 @@ module.exports = function resolveConflict(
 
   known.forEach(function(current) {
     var previous = []
-    var parts = path.dirname(current.path).split(path.sep)
+    var parts = path.dirname(current.path).split(pathSep)
 
     while (parts.length) {
       var pop = parts.pop()
-      var proposal = pop.concat(path.sep, current.name)
-
+      var proposal = pop.concat(pathSep, current.name)
+      //console.log(">>>",proposal);
       if (previous.length) {
         proposal = path.join.apply(
           null,
@@ -38,7 +41,7 @@ module.exports = function resolveConflict(
 
       if (! solutions[proposal]) {
         solutions[proposal] = {
-          name: proposal,
+          name: slash(proposal),
           path: current.path
         }
 

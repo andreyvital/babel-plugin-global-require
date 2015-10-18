@@ -25,5 +25,8 @@
   },
   "options": {
     "mocha": "src/__tests__/**/*-test.js -R spec"
+  },
+  "dependencies": {
+    "slash": "^1.0.0"
   }
 }

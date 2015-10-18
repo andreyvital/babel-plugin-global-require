@@ -6,7 +6,7 @@ var path = require('path')
 var resolveConflict = require('./resolveConflict')
 var findPotentialConflictList = require('./findPotentialConflictList')
 var fetchAllFiles = require('./fetchAllFiles')
-
+var slash = require('slash');
 function generateGlobalMap(
   root,
   node_modules,
@@ -15,7 +15,7 @@ function generateGlobalMap(
   return resolveConflict(
     fetchAllFiles(root, exclude).map(function(file) {
       return {
-        path: file,
+        path: slash(file),
         name: path.basename(file, path.extname(file))
       }
     }),

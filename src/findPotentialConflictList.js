@@ -3,7 +3,7 @@
  */
 var fs = require('fs')
 var path = require('path')
-
+var slash  = require('slash')
 /**
  * "node_modules": "package.json" (devDependencies + dependencies)
  * "node_modules": "node_modules" (shallow scan)
@@ -38,6 +38,6 @@ module.exports = function findPotentialConflictList(node_modules) {
   }
 
   return fs.readdirSync(node_modules).filter(function(file) {
-    return fs.statSync(path.join(node_modules, file)).isDirectory()
+    return fs.statSync(slash(path.join(node_modules, file))).isDirectory()
   })
 }
