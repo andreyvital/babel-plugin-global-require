@@ -31,7 +31,7 @@ module.exports = function resolveConflict(
     while (parts.length) {
       var pop = parts.pop()
       var proposal = pop.concat(pathSep, current.name)
-      //console.log(">>>",proposal);
+
       if (previous.length) {
         proposal = path.join.apply(
           null,
