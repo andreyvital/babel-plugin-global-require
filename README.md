@@ -72,3 +72,7 @@ You can't require `hasAccessTo.js` only by its name because it would result in a
 import { hasAccessTo as ... } from 'rbac/hasAccessTo'
 import { hasAccessTo as ... } from 'acl/hasAccessTo'
 ```
+
+### Windows and path.resolve and path.join
+
+Now its working.
