@@ -17,7 +17,10 @@
     "require",
     "import"
   ],
-  "author": "Andrey K. Vital <andreykvital@gmail.com>",
+  "author": {
+    "name": "Andrey K. Vital",
+    "email": "andreykvital@gmail.com"
+  },
   "license": "MIT",
   "devDependencies": {
     "chai": "^3.3.0",
@@ -28,5 +31,17 @@
   },
   "dependencies": {
     "slash": "^1.0.0"
-  }
+  },
+  "gitHead": "eb35ac1a35745ca942712e5c2c12b56600b2b7a7",
+  "readme": "## `babel-plugin-global-require` [![npm version](https://badge.fury.io/js/babel-plugin-global-require.svg)](http://badge.fury.io/js/babel-plugin-global-require)\r\n```\r\nnpm install babel-plugin-global-require --save-dev\r\n```\r\n\r\nTell the plugin where's your *root*, *node_modules* and what to *exclude* by creating a new `.global-require` file:\r\n\r\n```JSON\r\n{\r\n  \"root\": \"src\",\r\n  \"exclude\": \"node_modules\",\r\n  \"node_modules\": \"node_modules\"\r\n}\r\n```\r\n\r\n**node_modules** can be configured with few options: *package.json*, `[\"module\", \"module\", \"module\"]` and the path to the *node_modules* directory. Both options `exclude` and `node_modules` are optional.\r\n\r\n### What are the benefits?\r\n- You'll use the same require statement from anywhere in your project;\r\n- You'll avoid path hell `../../../../..`;\r\n- You'll write a more concise code.\r\n\r\nThis plugin is convention based: the alias is always the name of the file. For example:\r\n```\r\nsrc (root)\r\n  util\r\n    queue\r\n      InMemoryAcknowledgingQueue.js\r\n      PriorityQueue.js\r\n      CallbackQueue.js\r\n      ...\r\n  io\r\n    NuclearEventEmitter.js\r\n  user\r\n    UserActions.js\r\n    UserStore.js\r\n  security\r\n    authorization\r\n      rbac\r\n        Role.js\r\n  ...\r\n```\r\n\r\nThen:\r\n```JS\r\nimport NuclearEventEmitter from 'NuclearEventEmitter'\r\n\r\n// (...)\r\nimport UserStore from 'UserStore'\r\n\r\n// require\r\nvar Role = require('Role')\r\n```\r\n\r\nIt will translate `'NuclearEventEmitter'` to `src/io/NuclearEventEmitter.js` for you. And the same happens to `UserStore` and `Role`.\r\n\r\n### But what about conflicts?\r\nGiven the following structure:\r\n```\r\nsrc\r\n  security\r\n    authorization\r\n      rbac\r\n        hasAccessTo.js\r\n      acl\r\n        hasAccessTo.js\r\n```\r\n\r\nYou can't require `hasAccessTo.js` only by its name because it would result in a require of undesired file. So for this specific case, the conflict is resolved simply by going up one directory (and it keeps going until there's no conflict):\r\n\r\n```JS\r\nimport { hasAccessTo as ... } from 'rbac/hasAccessTo'\r\nimport { hasAccessTo as ... } from 'acl/hasAccessTo'\r\n```\r\n\r\n### Windows and path.resolve and path.join\r\n\r\nNow its working.\r\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/CentaurWarchief/babel-plugin-global-require/issues"
+  },
+  "homepage": "https://github.com/CentaurWarchief/babel-plugin-global-require",
+  "_id": "babel-plugin-global-require@0.2.0",
+  "_shasum": "a2dcef89c18ec10268abccddc1aa7eae6f576767",
+  "_from": "git://github.com/mr47/babel-plugin-global-require",
+  "_resolved": "git://github.com/mr47/babel-plugin-global-require#eb35ac1a35745ca942712e5c2c12b56600b2b7a7",
+  "_fromGithub": true
 }

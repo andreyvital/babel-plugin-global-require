@@ -4,6 +4,7 @@
 var path = require('path')
 var slash = require('slash')
 var os = require('os')
+var fs = require('fs')
 var pathSep = os.type() === "Windows_NT"? "/": path.sep;
 
 /**
@@ -15,6 +16,7 @@ module.exports = function resolveConflict(
   map,
   potentialConflictMap
 ) {
+
   var known = findConflictsInMap(map)
   var solutions = []
 
@@ -23,7 +25,6 @@ module.exports = function resolveConflict(
       return (potentialConflictMap || []).indexOf(candidate.name) !== -1
     })
   )
-
   known.forEach(function(current) {
     var previous = []
     var parts = path.dirname(current.path).split(pathSep)

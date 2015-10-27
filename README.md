@@ -76,3 +76,42 @@ import { hasAccessTo as ... } from 'acl/hasAccessTo'
 ### Windows and path.resolve and path.join
 
 Now its working.
+
+### MinDeep Option (default = 0)
+
+Some times you need set minimum path deep 
+
+```
+src
+  security
+    authorization
+      dropbox
+        OAuth2.js
+        OAuth1.js
+```
+
+For now three is no OAuth1.js or OAuth2.js files in project but when you need more logic and you added new auth service
+```
+src
+  security
+    authorization
+      google
+        OAuth2.js
+      dropbox
+        OAuth2.js
+        OAuth1.js
+```
+
+You want to make some logic and no path fixing in future, event if you removed OAuth2 from project you dont need to fix paths
+
+```JS
+import { OAuth1 as ... } from 'google/OAuth2'
+import { OAuth2 as ... } from 'dropbox/OAuth2'
+import { OAuth3 as ... } from 'dropbox/OAuth1'
+```
+So its still will be valid
+```JS
+import { OAuth1 as ... } from 'google/OAuth2'
+import { OAuth3 as ... } from 'dropbox/OAuth1'
+```
+

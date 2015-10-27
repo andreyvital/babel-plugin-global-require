@@ -8,6 +8,7 @@ var slash = require('slash')
 var opts = {}
 var config = slash(path.resolve('.global-require'))
 
+
 if (fs.existsSync(config)) {
   opts = JSON.parse(fs.readFileSync(config), function(key, value) {
     if (key === 'exclude' && value.length) {
@@ -28,13 +29,15 @@ module.exports = function(babel) {
       Program: function(node, parent) {
         var node_modules
           = opts.node_modules ? slash(path.resolve(opts.node_modules)) : null
-
         if (opts.root) {
           globalMap = generateGlobalMap(
-            slash(path.resolve(opts.root)),
+            path.resolve(opts.root),
             node_modules,
-            opts.exclude
-          )
+            opts.exclude,
+            parseInt(opts.minDeep || 0)
+          );
+          //fs.writeFileSync("C:/1.txt",JSON.stringify(globalMap));
+          //throw Error("E_FILE_TEST");
         }
       },
       ImportDeclaration: function(node, parent) {
