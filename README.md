@@ -109,7 +109,7 @@ import { OAuth1 as ... } from 'google/OAuth2'
 import { OAuth2 as ... } from 'dropbox/OAuth2'
 import { OAuth3 as ... } from 'dropbox/OAuth1'
 ```
-So its still will be valid (minDeep = 1)
+So its still will be valid (minDeep = 1), and all names will containe <file-folder>/<file-name>
 ```JS
 import { OAuth1 as ... } from 'google/OAuth2'
 import { OAuth3 as ... } from 'dropbox/OAuth1'
