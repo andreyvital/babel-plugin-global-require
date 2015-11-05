@@ -1,6 +1,3 @@
-/**
- * @author Andrey K. Vital <andreykvital@gmail.com>
- */
 var chai = require('chai')
 var resolveConflict = require('../resolveConflict')
 
