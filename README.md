@@ -1,19 +1,17 @@
 ## `babel-plugin-global-require` [![npm version](https://badge.fury.io/js/babel-plugin-global-require.svg)](http://badge.fury.io/js/babel-plugin-global-require)
+
+### Installation
 ```
-npm install babel-plugin-global-require --save-dev
+npm install --save-dev babel-plugin-global-require
 ```
 
-Tell the plugin where's your *root*, *node_modules* and what to *exclude* by creating a new `.global-require` file:
+Tell the plugin where's your *root* by creating a  `.global-require` file:
 
 ```JSON
 {
-  "root": "src",
-  "exclude": "node_modules",
-  "node_modules": "node_modules"
+  "root": "src"
 }
 ```
-
-**node_modules** can be configured with few options: *package.json*, `["module", "module", "module"]` and the path to the *node_modules* directory. Both options `exclude` and `node_modules` are optional.
 
 ### What are the benefits?
 - You'll use the same require statement from anywhere in your project;
