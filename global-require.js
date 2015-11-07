@@ -4,9 +4,10 @@
 var fs = require('fs')
 var path = require('path')
 var generateGlobalMap = require('./src/generateGlobalMap.js')
-
+var slash = require('slash')
 var opts = {}
-var config = path.resolve('.global-require')
+var config = slash(path.resolve('.global-require'))
+
 
 if (fs.existsSync(config)) {
   opts = JSON.parse(fs.readFileSync(config), function(key, value) {
@@ -27,21 +28,21 @@ module.exports = function(babel) {
     visitor: {
       Program: function(node, parent) {
         var node_modules
-          = opts.node_modules ? path.resolve(opts.node_modules) : null
-
+          = opts.node_modules ? slash(path.resolve(opts.node_modules)) : null
         if (opts.root) {
           globalMap = generateGlobalMap(
             path.resolve(opts.root),
             node_modules,
-            opts.exclude
-          )
+            opts.exclude,
+            parseInt(opts.minDeep || 0)
+          );
         }
       },
       ImportDeclaration: function(node, parent) {
         var what = node.source.value
 
         if (globalMap[what]) {
-          node.source.value = globalMap[what].path
+          node.source.value = slash(globalMap[what].path)
           // refs #2
           // node.source.value = './' + path.relative(cwd, globalMap[what].path)
         }
