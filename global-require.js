@@ -36,8 +36,6 @@ module.exports = function(babel) {
             opts.exclude,
             parseInt(opts.minDeep || 0)
           );
-          //fs.writeFileSync("C:/1.txt",JSON.stringify(globalMap));
-          //throw Error("E_FILE_TEST");
         }
       },
       ImportDeclaration: function(node, parent) {

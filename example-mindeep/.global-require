@@ -1,0 +1,6 @@
+{
+  "root": "src",
+  "node_modules": "node_modules",
+  "exclude": "node_modules",
+  "minDeep": 0
+}

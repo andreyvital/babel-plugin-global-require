@@ -19,7 +19,6 @@ function generateGlobalMap(
     fetchAllFiles(root, exclude).map(function(file) {
       var minDeepPath;
       if (minDeep>0) minDeepPath = file.split("/").slice(0,-1).slice(-minDeep)[0]; // 1
-
       return {
         path: slash(file),
         name: minDeep===0?path.basename(file, path.extname(file)):minDeepPath+pathSep+path.basename(file, path.extname(file))
