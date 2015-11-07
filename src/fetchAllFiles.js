@@ -20,7 +20,7 @@ module.exports = function fetchAllFiles(root, exclude) {
       return
     }
 
-    results.push(slash(absolute).toString())
+    results.push(absolute)
   })
 
   return results

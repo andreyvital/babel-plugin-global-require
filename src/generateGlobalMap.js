@@ -1,10 +1,13 @@
+var os = require('os')
 var fs = require('fs')
 var path = require('path')
 var resolveConflict = require('./resolveConflict')
 var findPotentialConflictList = require('./findPotentialConflictList')
 var fetchAllFiles = require('./fetchAllFiles')
 var slash = require('slash');
+
 var pathSep = os.type() === "Windows_NT"? "/": path.sep;
+
 function generateGlobalMap(
   root,
   node_modules,
