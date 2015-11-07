@@ -1,6 +1,3 @@
-/**
- * @author Andrey K. Vital <andreykvital@gmail.com>
- */
 var fs = require('fs')
 var path = require('path')
 var slash  = require('slash')

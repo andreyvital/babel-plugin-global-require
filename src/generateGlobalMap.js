@@ -1,7 +1,3 @@
-/**
- * @author Andrey K. Vital <andreykvital@gmail.com>
- */
-var os = require('os')
 var fs = require('fs')
 var path = require('path')
 var resolveConflict = require('./resolveConflict')

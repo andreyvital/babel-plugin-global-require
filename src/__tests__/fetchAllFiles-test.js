@@ -1,6 +1,3 @@
-/**
- * @author Andrey K. Vital <andreykvital@gmail.com>
- */
 var expect = require('chai').expect
 var fetchAllFiles = require('../fetchAllFiles')
 
