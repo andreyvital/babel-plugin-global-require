@@ -125,6 +125,4 @@ describe('resolveConflict', function() {
       }
     ])
   })
-
-  it('resolves conflict relative to root')
 })
