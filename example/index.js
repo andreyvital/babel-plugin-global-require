@@ -1,7 +1,5 @@
-require('sub')
 import sub from 'sub'
-
-require(['sub', 'sub', 'sub'], function(sub, sub2) {
-})
+import sum from 'sum'
 
 console.log(sub(10, 5))
+console.log(sum(10, 10))

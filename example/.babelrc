@@ -3,6 +3,10 @@
     "es2015"
   ],
   "plugins": [
-    "../global-require.js"
+    ["../global-require.js", {
+      "root": "src",
+      "exclude": "/node_modules/",
+      "node_modules": "package.json"
+    }]
   ]
 }

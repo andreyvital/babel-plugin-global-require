@@ -2,26 +2,19 @@ var fs = require('fs')
 var path = require('path')
 var generateGlobalMap = require('./src/generateGlobalMap.js')
 
-var opts = {}
-var config = path.resolve('.global-require')
-
-if (fs.existsSync(config)) {
-  opts = JSON.parse(fs.readFileSync(config), function(key, value) {
-    if (key === 'exclude' && value.length) {
-      return new RegExp(value)
-    }
-
-    return value
-  })
-}
-
 module.exports = function(babel) {
   var t = babel.types
   var globalMap = {}
 
   return {
     visitor: {
-      Program() {
+      Program(_path, state) {
+        var opts = state.opts
+
+        if (opts.exclude && opts.exclude != '') {
+          opts.exclude = new RegExp(opts.exclude)
+        }
+
         var node_modules
           = opts.node_modules ? path.resolve(opts.node_modules) : null
 
