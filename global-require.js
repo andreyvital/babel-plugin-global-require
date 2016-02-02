@@ -66,6 +66,10 @@ module.exports = function(babel) {
           return
         }
 
+        if (! args[0].node.elements) {
+          return
+        }
+
         // TODO: path.replaceWith(...)
         path.node.arguments[0] = t.arrayExpression(
           args[0].node.elements.map(node => {
