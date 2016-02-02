@@ -18,74 +18,70 @@ if (fs.existsSync(config)) {
 module.exports = function(babel) {
   var t = babel.types
   var globalMap = {}
-  // var cwd = process.cwd()
 
-  return new babel.Plugin('babel-plugin-global-require', {
+  return {
     visitor: {
-      Program: function(node, parent) {
+      Program() {
         var node_modules
           = opts.node_modules ? path.resolve(opts.node_modules) : null
 
         if (opts.root) {
-          globalMap = generateGlobalMap(
-            path.resolve(opts.root),
-            node_modules,
-            opts.exclude
-          )
+          globalMap = generateGlobalMap(path.resolve(opts.root), node_modules, opts.exclude)
         }
       },
-      ImportDeclaration: function(node, parent) {
-        var what = node.source.value
+      ImportDeclaration(path, parent) {
+        var what = path.get('source').node.value
 
         if (globalMap[what]) {
-          node.source.value = globalMap[what].path
-          // refs #2
-          // node.source.value = './' + path.relative(cwd, globalMap[what].path)
+          path.get('source').node.value = globalMap[what].path
         }
-
-        return node
       },
-      CallExpression: function(node, parent) {
-        if (! t.isIdentifier(node.callee, { name: 'require' })) {
-          return node
+      CallExpression(path, state) {
+        var callee = path.get('callee')
+
+        var isRequire = t.isIdentifier(callee.node, {
+          name: 'require'
+        })
+
+        if (! isRequire) {
+          return
         }
 
-        var args = node.arguments
+        var args = path.get('arguments')
 
         if (args && args.length === 0) {
-          return node
+          return
         }
 
-        // CommonJS
-        if (t.isLiteral(args[0])) {
-          var what = args[0].value
+        if (t.isStringLiteral(args[0])) {
+          var what = args[0].node.value
 
           if (! globalMap[what]) {
-            return node
+            return
           }
 
-          return t.callExpression(node.callee, [
-            t.literal(globalMap[what].path)
-          ])
+          path.replaceWith(
+            t.callExpression(callee.node, [
+              t.stringLiteral(globalMap[what].path)
+            ])
+          )
+
+          return
         }
 
         if (! t.isArrayExpression(args[0]) && t.isFunctionExpression(args[1])) {
-          return node
+          return
         }
 
-        return t.callExpression(node.callee, [
-          t.arrayExpression(
-            args[0].elements.map(function(node) {
-              var what = node.value
-
-              return t.literal(
-                globalMap[what] ? globalMap[what].path : what
-              )
-            })
-          ),
-          args[1]
-        ])
+        // TODO: path.replaceWith(...)
+        path.node.arguments[0] = t.arrayExpression(
+          args[0].node.elements.map(node => {
+            return t.stringLiteral(
+              globalMap[node.value] ? globalMap[node.value].path : what
+            )
+          })
+        )
       }
     }
-  })
+  }
 }
