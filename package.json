@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-global-require",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A simple plugin that allows you to require globally",
   "main": "global-require.js",
   "scripts": {
