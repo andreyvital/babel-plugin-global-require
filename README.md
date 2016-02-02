@@ -10,7 +10,7 @@ Tell the plugin where's your *root* (.babelrc):
 ```JSON
 {
   "plugins": [
-    ["babel-plugin-global-require", {
+    ["global-require", {
       "root": "src"
     }]
   ]
