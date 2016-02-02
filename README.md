@@ -5,11 +5,15 @@
 npm install --save-dev babel-plugin-global-require
 ```
 
-Tell the plugin where's your *root* by creating a  `.global-require` file:
+Tell the plugin where's your *root* (.babelrc):
 
 ```JSON
 {
-  "root": "src"
+  "plugins": [
+    ["babel-plugin-global-require", {
+      "root": "src"
+    }]
+  ]
 }
 ```
 
