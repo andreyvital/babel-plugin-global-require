@@ -24,13 +24,10 @@ module.exports = function resolveConflict(
 
     while (parts.length) {
       var pop = parts.pop()
-      var proposal = pop.concat(path.sep, current.name)
+      var proposal = pop.concat('/', current.name)
 
       if (previous.length) {
-        proposal = path.join.apply(
-          null,
-          [pop].concat(previous, current.name)
-        )
+        proposal = [pop].concat(previous, current.name).join('/')
       }
 
       if (! solutions[proposal]) {
