@@ -1,8 +1,9 @@
 var chai = require('chai')
 var resolveConflict = require('../resolveConflict')
-var sep = require('path').sep
+var path = require('path')
 
 var expect = chai.expect
+var sep = path.sep
 
 function p(path) {
     return path.replace(/\//g, sep);
@@ -13,27 +14,34 @@ describe('resolveConflict', function() {
     expect(
       resolveConflict([
         {
-          path: p('src/deep/sum.js'),
-          name: 'sum'
+          name: 'sum',
+          path: p('src/deep/sum.js')
         }, {
-          path: p('src/deep/deep/sum.js'),
-          name: 'sum'
+          name: 'sum',
+          path: p('src/deep/deep/sum.js')
         }, {
-          path: p('src/deep/deep/divide.js'),
-          name: 'divide'
+          name: 'divide',
+          path: p('src/deep/deep/divide.js')
+        }, {
+          name: 'index',
+          path: p('src/deep/deep/divide/index.js')
         }
       ])
     ).to.eql([
       {
-        path: p('src/deep/deep/divide.js'),
-        name: 'divide'
+        name: 'deep/sum',
+        path: p('src/deep/sum.js')
+      }, {
+        name: 'deep/deep/sum',
+        path: p('src/deep/deep/sum.js')
       },
       {
-        path: p('src/deep/sum.js'),
-        name: 'deep/sum'
-      }, {
-        path: p('src/deep/deep/sum.js'),
-        name: 'deep/deep/sum'
+        name: 'deep/divide',
+        path: p('src/deep/deep/divide.js')
+      },
+      {
+        name: 'deep/deep/divide',
+        path: p('src/deep/deep/divide/index.js')
       }
     ])
   })
@@ -50,6 +58,9 @@ describe('resolveConflict', function() {
         }, {
           name: 'conflict',
           path: p('src/foo/bar/deep/deep/conflict.js')
+        }, {
+          name: 'index',
+          path: p('src/foo/bar/baz/deep/deep/conflict/index.js')
         }
       ])
     ).to.eql([
@@ -62,6 +73,9 @@ describe('resolveConflict', function() {
       }, {
         name: 'deep/deep/conflict',
         path: p('src/foo/bar/deep/deep/conflict.js')
+      }, {
+        name: 'baz/deep/deep/conflict',
+        path: p('src/foo/bar/baz/deep/deep/conflict/index.js')
       }
     ])
   })
@@ -78,6 +92,9 @@ describe('resolveConflict', function() {
         }, {
           name: 'sum',
           path: p('src/foo/cool/math/sum.js')
+        }, {
+          name: 'index',
+          path: p('src/foo/cool/math/sum/index.js')
         }, {
           name: 'div',
           path: p('src/math/div.js')
@@ -100,6 +117,9 @@ describe('resolveConflict', function() {
         name: 'cool/math/sum',
         path: p('src/foo/cool/math/sum.js')
       }, {
+        name: 'foo/cool/math/sum',
+        path: p('src/foo/cool/math/sum/index.js')
+      }, {
         name: 'math/div',
         path: p('src/math/div.js')
       }, {
@@ -118,15 +138,55 @@ describe('resolveConflict', function() {
         [
           {
             name: 'sum',
-            path: p('src/math/sum.js')
+            path: p('src/sum.js')
+          }, {
+            name: 'index',
+            path: p('src/sum/index.js')
+          }, {
+            name: 'index',
+            path: p('src/bar/divide/index.js')
           }
         ],
-        ['sum']
+        ['sum', 'divide']
       )
     ).to.eql([
       {
-        name: 'math/sum',
-        path: p('src/math/sum.js')
+        name: 'bar/divide',
+        path: p('src/bar/divide/index.js')
+      }, {
+        name: 'src/sum',
+        path: p('src/sum.js')
+      }, {
+        name: 'sum',
+        path: p('src/sum/index.js')
+      }
+    ])
+  })
+
+  it('resolves conflicts with multiple index.js', function() {
+    expect(
+      resolveConflict([
+        {
+          name: 'index',
+          path: p('src/deep/sum/index.js')
+        }, {
+          name: 'index',
+          path: p('src/deep/deep/sum/index.js')
+        }, {
+          name: 'index',
+          path: p('src/deep/deep/divide/index.js')
+        }
+      ])
+    ).to.eql([
+      {
+        name: 'divide',
+        path: p('src/deep/deep/divide/index.js')
+      }, {
+        name: 'deep/sum',
+        path: p('src/deep/sum/index.js')
+      }, {
+        name: 'deep/deep/sum',
+        path: p('src/deep/deep/sum/index.js')
       }
     ])
   })
