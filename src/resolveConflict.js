@@ -2,54 +2,90 @@ var path = require('path')
 
 /**
  * @param   {Object[]} map
- * @param   {String[]} potentialConflictMap
+ * @param   {String[]} [potentialConflictMap]
  * @returns {Object[]}
  */
 module.exports = function resolveConflict(
   map,
   potentialConflictMap
 ) {
-  var known = findConflictsInMap(map)
-  var solutions = []
+  var known = findConflictsInMap(fixIndexImportsInMap(map))
+  var resolved = resolveConflictsInMap(known)
 
-  known = known.concat(
-    map.filter(function(candidate) {
-      return (potentialConflictMap || []).indexOf(candidate.name) !== -1
+  if (potentialConflictMap) {
+    var resolvedNames = resolved.map(function(candidate) {
+      return candidate.name
     })
-  )
 
-  known.forEach(function(current) {
-    var previous = []
-    var parts = path.dirname(current.path).split(path.sep)
+    var conflictNames = potentialConflictMap.filter(function(name) {
+      return resolvedNames.indexOf(name) === -1
+    })
 
-    while (parts.length) {
-      var pop = parts.pop()
-      var proposal = pop.concat('/', current.name)
+    var unresolved = map.filter(function(candidate) {
+      return conflictNames.indexOf(candidate.name) !== -1
+    })
 
-      if (previous.length) {
-        proposal = [pop].concat(previous, current.name).join('/')
-      }
-
-      if (! solutions[proposal]) {
-        solutions[proposal] = {
-          name: proposal,
-          path: current.path
-        }
-
-        break
-      }
-
-      previous.push(pop)
-    }
-  })
+    map = resolveConflictsInMap(
+      unresolved,
+      resolvedNames.concat(conflictNames)
+    ).concat(resolved)
+  }
 
   return map.filter(function(candidate) {
     return known.indexOf(candidate) === -1
-  }).concat(
-    Object.keys(solutions).map(function(key) {
-      return solutions[key]
-    })
-  )
+  }).concat(resolved)
+}
+
+/**
+ * @param {Object[]} map
+ * @returns {Array}
+ */
+function fixIndexImportsInMap(map) {
+  return map.map(function(obj) {
+    var basename = path.basename(obj.path)
+
+    if (basename === 'index.js') {
+      var moduleName = obj.path.split('.')[0].split(path.sep)
+      obj.name = moduleName[moduleName.length - 2]
+    }
+
+    return obj
+  })
+}
+
+/**
+ * @param {Object[]} map
+ * @param {String[]} [reservedNames]
+ * @returns {Object[]}
+ */
+function resolveConflictsInMap(map, reservedNames) {
+  reservedNames = reservedNames || []
+
+  return map.map(function(current) {
+    var previous = []
+    var parts = path.dirname(current.path).split(path.sep)
+
+    if (path.basename(current.path) === 'index.js') {
+      parts = parts.splice(0, parts.length - 1)
+    }
+
+    while (parts.length) {
+      var pop = parts.pop()
+      var proposal = previous.length ?
+        [pop].concat(previous, current.name).join('/') :
+        pop.concat('/', current.name)
+
+      if (reservedNames.indexOf(proposal) === -1) {
+        reservedNames.push(proposal)
+        current.name = proposal
+        break
+      }
+
+      previous.unshift(pop)
+    }
+
+    return current
+  })
 }
 
 /**
