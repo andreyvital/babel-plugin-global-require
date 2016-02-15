@@ -56,6 +56,28 @@ var Role = require('Role')
 
 It will translate `'NuclearEventEmitter'` to `src/io/NuclearEventEmitter.js` for you. And the same happens to `UserStore` and `Role`.
 
+### What about requiring `index.js` by parent folder name?
+It is common to require an `index.js` file by the name of its parent directory, for example:
+
+    src
+      security
+        authorisation
+          index.js
+
+Old require statement:
+
+```JS
+require('./security/authorisation')
+```
+
+New require statement with the plugin:
+
+```JS
+require('authorisation')
+```
+
+This behaviour follows the same conflict resolution procedure outlined below.
+
 ### But what about conflicts?
 Given the following structure:
 ```
