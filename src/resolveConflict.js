@@ -71,9 +71,13 @@ function resolveConflictsInMap(map, reservedNames) {
 
     while (parts.length) {
       var pop = parts.pop()
-      var proposal = previous.length ?
-        [pop].concat(previous, current.name).join('/') :
-        pop.concat('/', current.name)
+      var proposal
+
+      if (previous.length) {
+        proposal = [pop].concat(previous, current.name).join('/')
+      } else {
+        proposal = pop.concat('/', current.name)
+      }
 
       if (reservedNames.indexOf(proposal) === -1) {
         reservedNames.push(proposal)
