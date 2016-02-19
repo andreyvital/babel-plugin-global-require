@@ -12,7 +12,7 @@ module.exports = function resolveConflict(
   var known = findConflictsInMap(fixIndexImportsInMap(map))
   var resolved = resolveConflictsInMap(known)
 
-  if (potentialConflictMap) {
+  if (potentialConflictMap && potentialConflictMap.length) {
     var resolvedNames = resolved.map(function(candidate) {
       return candidate.name
     })
