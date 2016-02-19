@@ -19,7 +19,11 @@ module.exports = function(babel) {
           = opts.node_modules ? path.resolve(opts.node_modules) : null
 
         if (opts.root) {
-          globalMap = generateGlobalMap(path.resolve(opts.root), node_modules, opts.exclude)
+          globalMap = generateGlobalMap(
+            path.resolve(opts.root),
+            node_modules,
+            opts.exclude
+          )
         }
       },
       ImportDeclaration(path, parent) {

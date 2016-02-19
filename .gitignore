@@ -2,3 +2,4 @@
 node_modules/
 output.js
 npm-debug.log
+example/transform.js
