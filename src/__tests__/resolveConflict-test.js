@@ -6,7 +6,7 @@ var expect = chai.expect
 var sep = path.sep
 
 function p(path) {
-    return path.replace(/\//g, sep);
+  return path.replace(/\//g, sep);
 }
 
 describe('resolveConflict', function() {
